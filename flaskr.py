@@ -38,14 +38,15 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select title, text from entries order by id desc')
-    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    cur = g.db.execute('select title, text, id from entries order by id desc')
+    entries = [dict(title=row[0], text=row[1], id=row[2]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
 @app.route('/entry/<int:post_id>/')
 def entry(post_id):
-    cur = g.db.execute('select title, text from entries where id=?', [post_id])
-    entry = cur.fetchone()
+    cur = g.db.execute('select title, text, id from entries where id=?', [post_id])
+    e = cur.fetchone()
+    entry = dict(title=e[0], text=e[1], id=e[2])
     return render_template('entry.html', entry=entry)
 
 @app.route('/add/', methods=['POST'])

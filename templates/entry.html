@@ -2,8 +2,10 @@
 
 {% block body %}
 
-<h2>{{ entry.title }}</h2>
-
-{{ entry.text }}
+<ul class=entries>
+    <li><h2><a href="{{url_for('entry', post_id=entry.id)}}">{{ entry.title }}</a></h2></li>
+    
+    {{ entry.text|safe }}
+</ul>
 
 {% endblock %}

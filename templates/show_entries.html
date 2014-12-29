@@ -12,9 +12,10 @@
     </dl>
 </form>
 {% endif %}
+
 <ul class=entries>
     {% for entry in entries %}
-    <li><h2>{{ entry.title }}</h2></li>{{ entry.text|safe }}
+    <li><h2><a href="{{url_for('entry', post_id=entry.id)}}">{{ entry.title }}</a></h2></li>{{ entry.text|safe }}
     {% else %}
     <li><em>No entries to be found here...</em></li>
     {% endfor %}
