@@ -3,18 +3,22 @@
 {% block body %}
 
 <ul class=entries>
-    <li><h2><a href="{{url_for('entry', post_id=entry.id)}}">{{ entry.title }}</a></h2></li>
+    <li><h2><a href="{{ url_for('entry', post_id=entry.id) }}">{{ entry.title }}</a></h2></li>
     
     {{ entry.text|safe }}
 </ul>
 
-<br><br>
+<br>
 
 {% if session.logged_in %}
-    <form method="post" class=delete>
-        <input name="d" type="hidden" value="yea">
+    <form action="{{ url_for('delete', post_id=entry.id) }}" method="post" class=delete-button>
         <input type="submit" value="Delete post">
     </form>
+
+    <div class="edit-button">
+        <a href="{{ url_for('edit', post_id=entry.id) }}">Edit post</a>
+    </div>
+
 {% endif %}
 
 {% endblock %}
