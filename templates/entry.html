@@ -8,4 +8,13 @@
     {{ entry.text|safe }}
 </ul>
 
+<br><br>
+
+{% if session.logged_in %}
+    <form method="post" class=delete>
+        <input name="d" type="hidden" value="yea">
+        <input type="submit" value="Delete post">
+    </form>
+{% endif %}
+
 {% endblock %}

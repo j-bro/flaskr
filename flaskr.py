@@ -42,12 +42,22 @@ def show_entries():
     entries = [dict(title=row[0], text=row[1], id=row[2]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
-@app.route('/entry/<int:post_id>/')
+@app.route('/entry/<int:post_id>/', methods=['GET', 'POST'])
 def entry(post_id):
-    cur = g.db.execute('select title, text, id from entries where id=?', [post_id])
-    e = cur.fetchone()
-    entry = dict(title=e[0], text=e[1], id=e[2])
-    return render_template('entry.html', entry=entry)
+    if request.method == 'POST':
+        if request.form.get('d') == 'yea':
+            g.db.execute('delete from entries where id=?', [post_id])
+            g.db.commit()
+            flash("Post deleted")
+            return redirect(url_for('show_entries'))
+        if not session.get('logged_in'):
+            flash("You must be logged in")
+        return redirect(url_for('entry', post_id=post_id))
+    else:
+        cur = g.db.execute('select title, text, id from entries where id=?', [post_id])
+        e = cur.fetchone()
+        entry = dict(title=e[0], text=e[1], id=e[2])
+        return render_template('entry.html', entry=entry)
 
 @app.route('/add/', methods=['POST'])
 def add_entry():
